@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GreenBill 2.0 - Login/Signup</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script> tailwind.config = { darkMode: 'class' }; </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --font-heading: 'Poppins', sans-serif; --font-body: 'Inter', sans-serif; }
+    h1,h2,h3,h4,.logo { font-family: var(--font-heading); }
+    body { font-family: var(--font-body); }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-gray-100 to-green-50 dark:from-gray-900 dark:to-black text-gray-900 dark:text-white transition-all duration-500 flex flex-col min-h-screen">
+
+  <nav class="flex justify-between items-center px-8 py-4 shadow-md sticky top-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md z-50">
+    <div class="logo text-2xl font-extrabold">
+      <span class="text-green-600 dark:text-green-400">GreenBill</span> 
+      <span class="text-gray-800 dark:text-gray-200">2.0</span>
+    </div>
+    <button id="toggle-theme" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700">🌙</button>
+  </nav>
+
+  <div class="flex-grow flex items-center justify-center">
+    <div class="w-full max-w-md p-8 bg-white dark:bg-gray-800 rounded-3xl shadow-2xl transition-all duration-500 relative">
+      <h2 id="form-title" class="text-3xl font-bold text-center mb-8"></h2>
+
+      <p id="form-msg" class="text-center mt-4 font-semibold"></p>
+
+      
+      <form id="login-form" class="space-y-6">
+        <div class="relative">
+          <input id="login-email" type="email" placeholder="Email" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white" required>
+        </div>
+        <div class="relative">
+          <input id="login-password" type="password" placeholder="Password" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white" required>
+          <span id="toggle-login-password" class="absolute right-3 top-2.5 cursor-pointer select-none"></span>
+        </div>
+        <button type="submit" class="w-full px-4 py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition">Login</button>
+      </form>
+
+      
+      <form id="signup-form" class="space-y-6 hidden">
+        <input type="text" placeholder="Full Name" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white" required>
+        <input type="email" placeholder="Email" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white" required>
+        <div class="relative">
+          <input type="password" placeholder="Password" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white" required>
+          <span id="toggle-signup-password" class="absolute right-3 top-2.5 cursor-pointer select-none"></span>
+        </div>
+        <button type="submit" class="w-full px-4 py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition">Sign Up</button>
+      </form>
+
+      
+      <form id="forgot-form" class="space-y-6 hidden">
+        <input type="email" id="forgot-email" placeholder="Enter your email" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white" required>
+        <button type="submit" class="w-full px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg font-semibold transition">Send Reset Link</button>
+        <p class="text-center mt-2 text-blue-600 hover:underline cursor-pointer" id="back-login">Back to Login</p>
+      </form>
+
+      <p class="text-center mt-4" id="switch-container">
+        <span id="switch-text"></span>
+        <button id="switch-btn" class="text-green-600 dark:text-green-400 font-semibold hover:underline ml-2"></button>
+      </p>
+
+      <p id="forgot-btn" class="text-center mt-2 text-sm text-blue-600 hover:underline cursor-pointer">Forgot Password?</p>
+    </div>
+  </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const loginForm = document.getElementById('login-form');
+  const signupForm = document.getElementById('signup-form');
+  const forgotForm = document.getElementById('forgot-form');
+  const switchBtn = document.getElementById('switch-btn');
+  const switchText = document.getElementById('switch-text');
+  const switchContainer = document.getElementById('switch-container');
+  const formTitle = document.getElementById('form-title');
+  const toggleThemeBtn = document.getElementById('toggle-theme');
+  const forgotBtn = document.getElementById('forgot-btn');
+  const backLogin = document.getElementById('back-login');
+  const formMsg = document.getElementById('form-msg');
+
+  const loginPassword = document.getElementById('login-password');
+  const toggleLoginPassword = document.getElementById('toggle-login-password');
+  const signupPassword = signupForm.querySelector("input[type='password']");
+  const toggleSignupPassword = document.getElementById('toggle-signup-password');
+
+  const API_URL = "http://localhost:5000/api/auth";
+  let mode = 'login';
+
+  
+  function typeWriter(element, text, speed=50){
+    element.textContent = "";
+    let i = 0;
+    const interval = setInterval(()=>{
+      element.textContent += text.charAt(i);
+      i++;
+      if(i >= text.length) clearInterval(interval);
+    }, speed);
+  }
+
+  const updateUI = () => {
+    loginForm.classList.add('hidden');
+    signupForm.classList.add('hidden');
+    forgotForm.classList.add('hidden');
+    forgotBtn.classList.add('hidden');
+    switchContainer.classList.remove('hidden');
+    formMsg.textContent = '';
+    formMsg.className = 'text-center mt-4 font-semibold';
+
+    if(mode === 'login'){
+      loginForm.classList.remove('hidden');
+      forgotBtn.classList.remove('hidden');
+      typeWriter(formTitle, 'Login to your account');
+      switchText.textContent = "Don't have an account?";
+      switchBtn.textContent = 'Sign Up';
+    } else if(mode === 'signup'){
+      signupForm.classList.remove('hidden');
+      typeWriter(formTitle, 'Create a new account');
+      switchText.textContent = "Already have an account?";
+      switchBtn.textContent = 'Login';
+    } else if(mode === 'forgot'){
+      forgotForm.classList.remove('hidden');
+      switchContainer.classList.add('hidden');
+      typeWriter(formTitle, 'Reset Password');
+    }
+  }
+  updateUI();
+
+  switchBtn.addEventListener('click', () => {
+    mode = (mode==='login')?'signup':'login';
+    updateUI();
+  });
+
+  forgotBtn.addEventListener('click', () => { mode='forgot'; updateUI(); });
+  backLogin.addEventListener('click', () => { mode='login'; updateUI(); });
+
+  toggleThemeBtn.addEventListener('click', () => {
+    document.documentElement.classList.toggle('dark');
+    toggleThemeBtn.textContent = document.documentElement.classList.contains('dark')?'☀️':'🌙';
+    localStorage.setItem('theme', document.documentElement.classList.contains('dark')?'dark':'light');
+  });
+  if(localStorage.getItem('theme')==='dark'){
+    document.documentElement.classList.add('dark');
+    toggleThemeBtn.textContent = '☀️';
+  }
+
+  toggleLoginPassword.addEventListener('click', () => {
+    loginPassword.type = loginPassword.type === 'password' ? 'text' : 'password';
+  });
+  toggleSignupPassword.addEventListener('click', () => {
+    signupPassword.type = signupPassword.type === 'password' ? 'text' : 'password';
+  });
+
+  
+  loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    formMsg.textContent = '';
+    const email = document.getElementById("login-email").value;
+    const password = loginPassword.value;
+    try{
+      const res = await fetch(`${API_URL}/login`, {
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body: JSON.stringify({email,password})
+      });
+      const data = await res.json();
+      if(res.ok){
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        formMsg.textContent = `✅ ${data.message}`;
+        formMsg.className = "text-green-500 text-center mt-4 font-semibold";
+        setTimeout(()=>{ window.location.href="dashboard.html"; },1000);
+      } else{
+        formMsg.textContent = `❌ ${data.message}`;
+        formMsg.className = "text-red-500 text-center mt-4 font-semibold";
+      }
+    }catch(err){
+      console.error(err);
+      formMsg.textContent = "⚠️ Server error. Try again later!";
+      formMsg.className = "text-yellow-500 text-center mt-4 font-semibold";
+    }
+  });
+
+  
+  signupForm.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    formMsg.textContent='';
+    const name = signupForm.querySelector("input[type='text']").value;
+    const email = signupForm.querySelector("input[type='email']").value;
+    const password = signupPassword.value;
+    try{
+      const res = await fetch(`${API_URL}/register`, {
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body: JSON.stringify({name,email,password})
+      });
+      const data = await res.json();
+      if(res.ok){
+        formMsg.textContent = `🎉 ${data.message} Please login now.`;
+        formMsg.className = "text-green-500 text-center mt-4 font-semibold";
+        mode='login';
+        updateUI();
+      } else{
+        formMsg.textContent = `❌ ${data.message}`;
+        formMsg.className = "text-red-500 text-center mt-4 font-semibold";
+      }
+    }catch(err){
+      console.error(err);
+      formMsg.textContent = "⚠️ Server error. Try again later!";
+      formMsg.className = "text-yellow-500 text-center mt-4 font-semibold";
+    }
+  });
+
+  
+  forgotForm.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    formMsg.textContent='';
+    const email = document.getElementById("forgot-email").value;
+    try{
+      const res = await fetch(`${API_URL}/forgot-password`, {
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body: JSON.stringify({email})
+      });
+      const data = await res.json();
+      
+      formMsg.textContent = data.message ? data.message : "No response from server";
+      formMsg.className = res.ok ? "text-green-500 text-center mt-4 font-semibold" : "text-red-500 text-center mt-4 font-semibold";
+      if(res.ok){
+        setTimeout(()=>{ mode='login'; updateUI(); },1500);
+      }
+    }catch(err){
+      console.error(err);
+      formMsg.textContent = "⚠️ Something went wrong. Check console for error!";
+      formMsg.className = "text-yellow-500 text-center mt-4 font-semibold";
+    }
+  });
+
+});
+</script>
+
+</body>
+</html>

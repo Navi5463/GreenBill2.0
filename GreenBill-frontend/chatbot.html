@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electricity Chatbot Widget - Embed Script</title>
+    <style>
+        
+        .electricity-chatbot-widget {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9999;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        .chatbot-floating-btn {
+            width: 56px;
+            height: 56px;
+            background: #3B82F6;
+            border-radius: 50%;
+            border: none;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .chatbot-floating-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
+        }
+        
+        .chatbot-container {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 320px;
+            height: 400px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border: 1px solid #e5e7eb;
+            display: none;
+            flex-direction: column;
+        }
+        
+        .chatbot-header {
+            background: linear-gradient(135deg, #3B82F6, #10B981);
+            color: white;
+            padding: 16px;
+            border-radius: 16px 16px 0 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .chatbot-title {
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .chatbot-subtitle {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+        
+        .chatbot-close {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 4px;
+        }
+        
+        .chatbot-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .chatbot-message {
+            max-width: 80%;
+            padding: 12px;
+            border-radius: 16px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        
+        .chatbot-message.user {
+            background: #3B82F6;
+            color: white;
+            align-self: flex-end;
+        }
+        
+        .chatbot-message.bot {
+            background: #f3f4f6;
+            color: #374151;
+            align-self: flex-start;
+        }
+        
+        .chatbot-input-area {
+            padding: 16px;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .chatbot-input-container {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .chatbot-input {
+            flex: 1;
+            padding: 8px 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 20px;
+            font-size: 14px;
+            outline: none;
+        }
+        
+        .chatbot-input:focus {
+            border-color: #3B82F6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .chatbot-send {
+            background: #3B82F6;
+            border: none;
+            color: white;
+            padding: 8px;
+            border-radius: 50%;
+            cursor: pointer;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .chatbot-send:hover {
+            background: #2563eb;
+        }
+        
+        .chatbot-send:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .chatbot-typing {
+            display: flex;
+            gap: 4px;
+            padding: 12px;
+            background: #f3f4f6;
+            border-radius: 16px;
+            align-self: flex-start;
+            max-width: 80px;
+        }
+        
+        .chatbot-typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #9ca3af;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+        
+        .chatbot-typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .chatbot-typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+            }
+            30% {
+                transform: translateY(-10px);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .chatbot-container {
+                width: calc(100vw - 32px);
+                height: calc(100vh - 100px);
+                right: -16px;
+                bottom: -16px;
+            }
+        }
+    </style>
+</head>
+<body>
+   
+   <div style=" padding: 20px; max-width: 800px; margin: 0 auto; background:#0f172a; border-radius:16px; color:white; font-family:sans-serif;"> <h1 style="font-size:1.5rem; font-weight:700; color:#22c55e; margin-bottom:10px;">
+     💡 Meet GreenBot
+     </h1> <p style="margin-bottom:15px; color:#cbd5e1;"> Your personal assistant for electricity savings. Ask anything about your bill, energy usage or smart ways to reduce your costs.
+       </p> <ul style="list-style:disc; padding-left:20px; color:#e2e8f0; line-height:1.8;"> 
+        <li>“How can I lower my monthly electricity bill?”</li> 
+        <li>“Which appliances consume the most energy?”</li> 
+        <li>“Should I switch to solar?”</li> <li>“Tips to optimize my home energy usage”</li>
+       </ul>
+        <p style="margin-top:20px; font-size:0.9rem; color:#94a3b8;"> Click the chat icon at the bottom-right to start talking with GreenBot ⚡ </p> </div>
+
+  
+    <div class="electricity-chatbot-widget">
+        <button class="chatbot-floating-btn" onclick="toggleChatbot()" aria-label="Open electricity bill chatbot">
+            <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+            </svg>
+        </button>
+        
+        <div class="chatbot-container" id="chatbotContainer">
+            <div class="chatbot-header">
+                <div>
+                    <div class="chatbot-title">GreenBot</div>
+                    <div class="chatbot-subtitle">Online now</div>
+                </div>
+                <button class="chatbot-close" onclick="toggleChatbot()" aria-label="Close chatbot">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="chatbot-messages" id="chatbotMessages">
+                <div class="chatbot-message bot">
+                    Hi! I'm your Electricty Bill assistant. I can help you understand why your bill might be high and suggest ways to reduce it. What would you like to know?
+                </div>
+            </div>
+            
+            <div class="chatbot-input-area">
+                <div class="chatbot-input-container">
+                    <input type="text" class="chatbot-input" id="chatbotInput" placeholder="Ask about your electricity bill..." onkeypress="handleKeyPress(event)">
+                    <button class="chatbot-send" onclick="sendMessage()" aria-label="Send message">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let isOpen = false;
+        let messages = [];
+        let isTyping = false;
+
+        function toggleChatbot() {
+            isOpen = !isOpen;
+            const container = document.getElementById('chatbotContainer');
+            const btn = document.querySelector('.chatbot-floating-btn');
+            
+            if (isOpen) {
+                container.style.display = 'flex';
+                document.getElementById('chatbotInput').focus();
+            } else {
+                container.style.display = 'none';
+            }
+        }
+
+        function generateBotResponse(userMessage) {
+            const message = userMessage.toLowerCase();
+            
+            if (message.includes('high bill') || message.includes('expensive') || message.includes('cost') || message.includes('reduce')) {
+                return `I understand you're concerned about your high electricity bill. Here's a step-by-step approach to reduce it:
+
+🔍 Immediate Actions:
+1. Check for phantom loads - Unplug devices that aren't in use (chargers, TVs on standby, etc.)
+2. Adjust thermostat - Set AC to 78°F (26°C) or higher, use fans to circulate air
+3. Switch to LED bulbs - Replace all incandescent and CFL bulbs with LEDs (saves 80% energy)
+4. Use natural light - Open curtains during day, turn off unnecessary lights
+
+🏠 Appliance Optimization:
+• Refrigerator: Clean coils monthly, check door seals, set temp to 37-40°F
+• Washing Machine: Use cold water, full loads only, air dry when possible
+• Dishwasher: Run only when full, use eco mode
+• Water Heater: Lower to 120°F, insulate tank, use timer
+
+💡 Smart Upgrades:
+• Install smart thermostats (saves 10-15%)
+• Use smart plugs for scheduling devices
+• Consider energy-efficient appliances (look for ENERGY STAR rating)
+• Install solar panels for long-term savings
+
+Would you like me to elaborate on any of these suggestions?`;
+            }
+            
+            if (message.includes('solar') || message.includes('panel') || message.includes('renewable')) {
+                return `Great question about solar panels! Here's what you should know:
+
+☀️ Solar Panel Benefits:
+• Immediate savings: 20-50% reduction in electricity bills
+• Long-term investment: Payback period typically 6-10 years
+• Tax incentives: Federal tax credits up to 30% of installation cost
+• Property value: Increases home value by 3-4%
+
+💰 Cost Considerations:
+• Average residential system: $15,000-$25,000 (before incentives)
+• Monthly savings: $100-$300 depending on usage and location
+• Financing options: Solar loans, leases, or power purchase agreements
+
+🔧 Installation Factors:
+• Roof condition and orientation (south-facing ideal)
+• Local regulations and permits
+• Net metering policies in your area
+• System size based on your energy consumption
+
+Would you like help calculating potential savings for your home?`;
+            }
+            
+            if (message.includes('led') || message.includes('light') || message.includes('bulb')) {
+                return `LED lighting is one of the easiest ways to save energy! Here's the complete guide:
+
+💡 LED vs Traditional Bulbs:
+• Energy savings: 80-90% less electricity than incandescent
+• Lifespan: 25,000-50,000 hours vs 1,000 hours for incandescent
+• Heat output: 90% less heat, reducing AC load
+• Cost: Higher upfront but saves $50-100 per bulb over lifetime
+
+🏠 Where to Replace:
+• High-use areas: Kitchen, living room, bathroom
+• Outdoor lighting: Security lights, porch lights
+• Decorative lighting: String lights, accent lighting
+• Garage/workshop: High-brightness LED strips
+
+📊 Quick Savings Calculator:
+• Replace 10 incandescent bulbs (60W each) with LEDs (9W each)
+• Daily savings: 5.1 kWh = $0.51/day = $186/year
+• Bulb cost: $50 vs annual savings: $186
+
+Ready to start your LED upgrade? I can help you prioritize which lights to replace first!`;
+            }
+            
+            if (message.includes('appliance') || message.includes('fridge') || message.includes('ac') || message.includes('washing') || message.includes('dishwasher')) {
+                return `Let's optimize your appliances for maximum energy efficiency! Here's a comprehensive guide:
+
+❄️ Refrigerator (Biggest Energy Hog):
+• Temperature settings: 37-40°F (fridge), 0-5°F (freezer)
+• Maintenance: Clean coils every 6 months, check door seals
+• Location: Keep away from heat sources, ensure proper ventilation
+• Upgrade: ENERGY STAR models use 15% less energy
+
+🌡️ Air Conditioning:
+• Thermostat: Set to 78°F (26°C) or higher, use programmable thermostat
+• Maintenance: Clean/replace filters monthly, service annually
+• Insulation: Seal windows, doors, and ducts
+• Smart upgrades: Smart thermostats save 10-15% automatically
+
+🧺 Washing Machine:
+• Water temperature: Use cold water for most loads (saves 90% energy)
+• Load size: Full loads only, use appropriate water level
+• Drying: Air dry when possible, clean lint trap
+• Upgrade: Front-loading machines use 50% less water
+
+Which appliance would you like to focus on optimizing first?`;
+            }
+            
+            if (message.includes('smart') || message.includes('automation') || message.includes('timer') || message.includes('plug')) {
+                return `Smart home technology can significantly reduce your energy bills! Here's how to get started:
+
+🏠 Smart Thermostats:
+• Nest, Ecobee, Honeywell: Learn your schedule, auto-adjust
+• Savings: 10-15% on heating/cooling costs
+• Features: Remote control, geofencing, energy reports
+• Installation: DIY-friendly, professional installation available
+
+🔌 Smart Plugs & Switches:
+• Scheduling: Turn off devices during peak hours
+• Monitoring: Track energy usage of individual devices
+• Voice control: Works with Alexa, Google Assistant
+• Cost: $15-50 per plug, easy to install
+
+💰 Expected Savings:
+• Smart thermostat: $100-200/year
+• Smart plugs: $50-100/year
+• Smart lighting: $30-80/year
+• Total potential savings: $180-380/year
+
+Would you like help choosing specific smart devices for your home?`;
+            }
+            
+            if (message.includes('tip') || message.includes('save') || message.includes('help') || message.includes('advice')) {
+                return `Here are my top energy-saving tips to reduce your electricity bill:
+
+⚡ Quick Wins (Do Today):
+1. Unplug phantom loads - Chargers, TVs, computers on standby
+2. Use power strips - Turn off multiple devices with one switch
+3. Adjust water heater - Lower to 120°F, use timer
+4. Close curtains - Keep heat out in summer, warmth in during winter
+5. Use ceiling fans - Allows higher thermostat settings
+
+🏠 Weekly Habits:
+• Laundry: Full loads only, cold water, air dry
+• Dishwasher: Full loads, eco mode, air dry
+• Cooking: Use microwave/air fryer instead of oven when possible
+• Cleaning: Vacuum fridge coils, clean AC filters
+
+💡 Long-term Investments:
+• LED bulbs: Replace all incandescent bulbs
+• Smart thermostat: Automate temperature control
+• Energy audit: Professional assessment of your home
+• Appliance upgrade: Replace old, inefficient appliances
+
+What specific area would you like to focus on first?`;
+            }
+            
+            return `I'm here to help with your electricity bill questions! I can assist with:
+
+• High bill analysis - Understanding why your bill is expensive
+• Energy-saving tips - Practical ways to reduce consumption
+• Appliance optimization - Making your devices more efficient
+• Smart home solutions - Technology to automate savings
+• Solar panel advice - Renewable energy options
+• LED lighting - Upgrading to efficient lighting
+• Maintenance schedules - Keeping appliances running efficiently
+
+Just ask me about any of these topics, or tell me what's concerning you about your electricity bill!`;
+        }
+
+        function addMessage(content, type) {
+            const messagesContainer = document.getElementById('chatbotMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chatbot-message ${type}`;
+            messageDiv.textContent = content;
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function showTyping() {
+            if (isTyping) return;
+            isTyping = true;
+            const messagesContainer = document.getElementById('chatbotMessages');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'chatbot-typing';
+            typingDiv.id = 'typingIndicator';
+            typingDiv.innerHTML = '<div class="chatbot-typing-dot"></div><div class="chatbot-typing-dot"></div><div class="chatbot-typing-dot"></div>';
+            messagesContainer.appendChild(typingDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function hideTyping() {
+            const typingIndicator = document.getElementById('typingIndicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+            isTyping = false;
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatbotInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            addMessage(message, 'user');
+            input.value = '';
+            
+            showTyping();
+            
+            setTimeout(() => {
+                hideTyping();
+                const response = generateBotResponse(message);
+                addMessage(response, 'bot');
+            }, 1000 + Math.random() * 1000);
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload Electricity Bill - GreenBill 2.0</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script> tailwind.config = { darkMode: 'class' }; </script>
+  <style>
+    :root { --font-heading: 'Poppins', sans-serif; --font-body: 'Inter', sans-serif; }
+    h1,h2,h3,h4,.logo { font-family: var(--font-heading); }
+    body { font-family: var(--font-body); }
+  </style>
+  <script>
+    (function () {
+      const stored = localStorage.getItem('theme');
+      if (!stored || stored === 'dark') document.documentElement.classList.add('dark');
+      else document.documentElement.classList.remove('dark');
+    })();
+  </script>
+</head>
+<body class="bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300 min-h-screen flex">
+  <aside id="sidebar" class="w-72 shrink-0 bg-white/90 dark:bg-gray-800/90 backdrop-blur border-r border-gray-200 dark:border-gray-700 fixed inset-y-0 left-0 flex flex-col z-50 transform -translate-x-full md:translate-x-0 transition-transform duration-300">
+    <div class="px-6 py-5 flex items-center justify-between">
+      <div class="logo text-2xl font-extrabold">
+        <span class="text-green-600 dark:text-green-400">GreenBill</span>
+        <span class="text-gray-800 dark:text-gray-200">2.0</span>
+      </div>
+      <button id="mobile-toggle" class="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-xl bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600">☰</button>
+    </div>
+    <nav class="px-3 py-2 space-y-1 text-[15px] mt-2">
+      <a href="dashboard.html" class="group flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700">🏠 <span>Dashboard</span></a>
+      <a href="myBills.html" class="group flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700">📄 <span>My Bills</span></a>
+      <a href="bill.html" class="group flex items-center gap-3 px-3 py-2 rounded-xl bg-green-50 text-green-700 dark:bg-green-900/40 dark:text-green-300 hover:bg-green-100 dark:hover:bg-green-900/60">⬆️ <span>Upload Bill</span></a>
+       <a href="#" id="helpSupportBtn" class="group flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700">
+  <span>🤖</span><span>GreenBot</span>
+</a>
+      <div class="mt-auto px-6 py-4 text-xs text-gray-500 dark:text-gray-400">© 2025 GreenBill 2.0</div>
+    </nav>
+  </aside>
+
+  <div class="flex-1 flex flex-col min-w-0 md:ml-72">
+    <header class="sticky top-0 z-40 bg-white/80 dark:bg-gray-800/80 backdrop-blur border-b border-gray-200 dark:border-gray-700">
+      <div class="flex items-center justify-between px-4 md:px-6 py-3">
+        <div class="md:hidden logo text-xl font-extrabold">
+          <span class="text-green-600 dark:text-green-400">GreenBill</span> 
+          <span class="text-gray-800 dark:text-gray-200">2.0</span>
+        </div>
+        <div class="ml-auto">
+          <button id="theme-toggle" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700">
+            <span id="theme-icon">☀️</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="flex-grow flex items-center justify-center p-6">
+      <div class="w-full max-w-lg bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg">
+        <h2 class="text-2xl font-bold text-center mb-6">Upload Your Bill</h2>
+
+        <form id="bill-upload-form" class="space-y-5">
+          <div>
+            <label class="block mb-2 font-medium">Units Consumed</label>
+            <input type="number" name="units" placeholder="Units (kWh)" required class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700">
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block mb-2 font-medium">Month</label>
+              <select name="month" required class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700">
+                <option value="">Select Month</option>
+                <option value="0">January</option><option value="1">February</option><option value="2">March</option>
+                <option value="3">April</option><option value="4">May</option><option value="5">June</option>
+                <option value="6">July</option><option value="7">August</option>
+                <option value="8">September</option><option value="9">October</option>
+                <option value="10">November</option><option value="11">December</option>
+              </select>
+            </div>
+            <div>
+              <label class="block mb-2 font-medium">Year</label>
+              <input type="number" name="year" placeholder="2025" required class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700">
+            </div>
+          </div>
+
+          <div>
+            <label class="block mb-2 font-medium">Bill Amount (₹)</label>
+            <input type="number" name="amount" placeholder="Enter amount" required class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700">
+          </div>
+
+          <div>
+            <label class="block mb-2 font-medium">Upload Bill (PDF/Image)</label>
+            <input type="file" name="file" id="bill-file" accept=".pdf,.jpg,.jpeg,.png" required
+              class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg 
+                     file:border-0 file:bg-green-600 file:text-white hover:file:bg-green-700">
+            <p id="file-name" class="text-sm mt-2 text-gray-600 dark:text-gray-400"></p>
+          </div>
+
+          <button type="submit" class="w-full py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition">Upload Bill</button>
+        </form>
+      </div>
+    </main>
+  </div>
+
+  <div id="toast" class="fixed bottom-6 right-6 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg opacity-0 transform translate-y-6 transition-all duration-300 z-50">
+    ✅ Bill uploaded successfully!
+  </div>
+
+  
+  <div id="chatbotPopup" class="fixed inset-0 bg-black/40 z-50 hidden items-center justify-center">
+  <div class="relative w-[360px] h-[500px] bg-white dark:bg-gray-800 rounded-2xl shadow-lg flex flex-col">
+    <div class="flex justify-between items-center p-4 bg-green-600 text-white rounded-t-2xl">
+      <h1 class="font-bold">💚GreenBot</h1>
+      <button id="closeChatbot" class="text-white text-xl font-bold">×</button>
+    </div>
+    <iframe src="chatbot.html" class="flex-1 w-full h-full rounded-b-2xl" frameborder="0"></iframe>
+  </div>
+</div>
+
+<script>
+const html = document.documentElement;
+const themeBtn = document.getElementById('theme-toggle');
+const themeIcon = document.getElementById('theme-icon');
+const fileInput = document.getElementById("bill-file");
+const fileName = document.getElementById("file-name");
+const billForm = document.getElementById("bill-upload-form");
+const mobileToggle = document.getElementById('mobile-toggle');
+const sidebar = document.getElementById('sidebar');
+const toast = document.getElementById("toast");
+
+function setIcon() { themeIcon.textContent = html.classList.contains('dark') ? '☀️' : '🌙'; }
+setIcon();
+
+themeBtn.addEventListener('click', () => {
+  const isDark = html.classList.toggle('dark');
+  themeIcon.textContent = isDark ? '☀️' : '🌙';
+});
+
+mobileToggle?.addEventListener('click', () => sidebar.classList.toggle('-translate-x-full'));
+
+fileInput.addEventListener("change", () => {
+  fileName.textContent = fileInput.files.length ? `📄 Selected File: ${fileInput.files[0].name}` : "";
+});
+
+billForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const units = billForm.units.value.trim();
+  const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  const month = monthNames[parseInt(billForm.month.value)];
+  const year = billForm.year.value.trim();
+  const amount = billForm.amount.value.trim();
+  const file = fileInput.files[0];
+
+  if (!units || month === "" || !year || !amount || !file) {
+    return alert("Please fill all fields and select a file!");
+  }
+
+  const formData = new FormData();
+  formData.append("units", units);
+  formData.append("month", month); 
+  formData.append("year", year);
+  formData.append("amount", amount);
+  formData.append("file", file);
+
+  const token = localStorage.getItem("token");
+
+  try {
+    const res = await fetch("http://localhost:5000/api/bills/upload", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}` },
+      body: formData
+    });
+
+    const result = await res.json();
+    if (!res.ok) throw new Error(result.message || "Upload failed!");
+
+
+    let bills = JSON.parse(localStorage.getItem("bills")) || [];
+    bills.push({ id: Date.now(), units: parseFloat(units), month, year, amount: parseFloat(amount) });
+    localStorage.setItem("bills", JSON.stringify(bills));
+    localStorage.setItem('manualBill', JSON.stringify({ month, year, amount: parseFloat(amount), units: parseFloat(units), fullText: '' }));
+
+    toast.classList.remove("opacity-0", "translate-y-6");
+    toast.classList.add("opacity-100", "translate-y-0");
+    setTimeout(() => {
+      toast.classList.remove("opacity-100", "translate-y-0");
+      toast.classList.add("opacity-0", "translate-y-6");
+      window.location.href = "dashboard.html";
+    }, 2000);
+
+    billForm.reset();
+    fileName.textContent = "";
+
+  } catch (err) {
+    console.error("❌ Upload error:", err);
+    alert("Failed to upload bill! Check console for details.");
+  }
+});
+
+
+  const helpBtn = document.getElementById('helpSupportBtn');
+  const chatbotPopup = document.getElementById('chatbotPopup');
+  const closeBtn = document.getElementById('closeChatbot');
+
+  helpBtn.addEventListener('click', () => {
+    chatbotPopup.classList.remove('hidden');
+  });
+
+  closeBtn.addEventListener('click', () => {
+    chatbotPopup.classList.add('hidden');
+  });
+
+ 
+  chatbotPopup.addEventListener('click', (e) => {
+    if (e.target === chatbotPopup) {
+      chatbotPopup.classList.add('hidden');
+    }
+  });
+</script>
+</body>
+</html>

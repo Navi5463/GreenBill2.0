@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GreenBill 2.0</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' };
+  </script>
+
+  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root { --font-heading: 'Poppins', sans-serif; --font-body: 'Inter', sans-serif; }
+    h1,h2,h3,h4,.logo { font-family: var(--font-heading); }
+    body { font-family: var(--font-body); }
+
+   
+    .fade-slide {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease-out;
+    }
+    .fade-slide.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+  </style>
+
+  
+  <script>
+    (function () {
+      const stored = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (stored === 'dark' || (!stored && prefersDark)) {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+  </script>
+</head>
+
+<div id="preloader" class="fixed inset-0 flex flex-col items-center justify-center bg-white dark:bg-gray-900 z-[9999] transition-opacity duration-700">
+  
+  
+  <div class="flex items-center space-x-2 animate-bounce">
+    <span class="text-4xl font-extrabold text-green-600 dark:text-green-400">🌱</span>
+    <h1 class="text-3xl font-extrabold">
+      <span class="text-green-600 dark:text-green-400">GreenBill</span>
+      <span class="text-gray-800 dark:text-gray-200">2.0</span>
+    </h1>
+  </div>
+
+  <div class="w-48 h-2 mt-6 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+    <div class="h-2 bg-green-500 rounded-full animate-[loading_2s_linear_infinite]"></div>
+  </div>
+</div>
+
+<style>
+@keyframes loading {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.slider {
+  display: flex;
+  animation: scroll 20s linear infinite;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%); 
+  }
+}
+
+.testimonial-slider {
+  display: flex;
+  animation: scrollTestimonials 25s linear infinite;
+}
+
+@keyframes scrollTestimonials {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); } 
+}
+
+
+
+
+</style>
+
+<script>
+  window.addEventListener("load", () => {
+    const preloader = document.getElementById("preloader");
+    preloader.classList.add("opacity-0"); 
+    setTimeout(() => preloader.style.display = "none", 700); 
+    }, 2000);
+</script>
+
+
+<body class="bg-gradient-to-br from-gray-100 to-green-50 dark:from-gray-900 dark:to-black text-gray-900 dark:text-white transition-all duration-500">
+
+  
+  <nav class="flex justify-between items-center px-8 py-4 shadow-md sticky top-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md z-50">
+ <div class="logo text-2xl font-extrabold">
+          <span class="text-green-600 dark:text-green-400">GreenBill</span> <span class="text-gray-800 dark:text-gray-200">2.0</span>
+        </div>
+    <ul class="hidden md:flex gap-6 font-medium">
+      <li><a href="#home" class="hover:text-green-500 dark:hover:text-green-300">Home</a></li>
+      <li><a href="#features" class="hover:text-green-500 dark:hover:text-green-300">Features</a></li>
+      <li><a href="#demo" class="hover:text-green-500 dark:hover:text-green-300">Demo</a></li>
+      <li><a href="#testimonials" class="hover:text-green-500 dark:hover:text-green-300">Testimonials</a></li>
+      <li><a href="#ratings" class="hover:text-green-500 dark:hover:text-green-300">Ratings</a></li>
+      <li><a href="#contact" class="hover:text-green-500 dark:hover:text-green-300">Contact Us</a></li>
+    </ul>
+   <button id="theme-toggle" 
+  class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700">
+  <span id="theme-icon">🌞</span>
+</button>
+  </nav>
+
+
+  <section id="home" class="flex flex-col md:flex-row items-center justify-between px-10 md:px-20 py-20 min-h-screen">
+    <div class="md:w-1/2 space-y-6 text-center md:text-left fade-slide">
+    <h1 class="text-4xl md:text-6xl font-extrabold leading-tight">
+        Smart Billing. <span class="text-green-600 dark:text-green-400">Smarter Future.</span>
+      </h1>
+
+      <p class="text-lg text-gray-700 dark:text-gray-300 fade-slide">
+        Upload bills, track expenses, and predict savings with ease.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start fade-slide">
+        <a href="login.html" class="px-6 py-3 bg-green-600 text-white rounded-lg text-lg font-semibold hover:bg-green-700 transition transform hover:scale-105">Get Started</a>
+        <a href="#demo" class="px-6 py-3 border-2 border-green-600 text-green-600 rounded-lg text-lg font-semibold hover:bg-green-50 dark:hover:bg-gray-800 transition transform hover:scale-105">Explore Demo</a>
+      </div>
+    </div>
+    <div class="md:w-1/2 mt-10 md:mt-0 flex justify-center fade-slide">
+      <img src="https://cdn-icons-png.flaticon.com/512/3135/3135673.png" alt="Illustration" class="w-80 dark:filter dark:invert">
+    </div>
+  </section>
+
+  <section id="features" class="px-10 md:px-20 py-20 text-center">
+  <h2 class="text-3xl md:text-4xl font-bold mb-12">Why Choose <span class="text-green-600 dark:text-green-400">GreenBill 2.0?</span></h2>
+  <div class="grid md:grid-cols-3 gap-8">
+    <div class="p-6 rounded-2xl shadow-lg bg-white dark:bg-gray-800 transform transition duration-300 hover:scale-105 hover:shadow-2xl">
+      <div class="text-4xl mb-4">📤</div>
+      <h3 class="font-bold text-xl mb-2">Upload Bills</h3>
+      <p class="text-gray-600 dark:text-gray-300">Easily upload and manage all your Electricity bills in one place.</p>
+    </div>
+    <div class="p-6 rounded-2xl shadow-lg bg-white dark:bg-gray-800 transform transition duration-300 hover:scale-105 hover:shadow-2xl">
+      <div class="text-4xl mb-4">📊</div>
+      <h3 class="font-bold text-xl mb-2">Track Expenses</h3>
+      <p class="text-gray-600 dark:text-gray-300">Visualize spending trends and monitor your financial health.</p>
+    </div>
+   <div class="p-6 rounded-2xl shadow-lg bg-white dark:bg-gray-800 transform transition duration-300 hover:scale-105 hover:shadow-2xl">
+  <div class="text-4xl mb-4">🤖</div>
+  <h3 class="font-bold text-xl mb-2">AI Assistant</h3>
+  <p class="text-gray-600 dark:text-gray-300">
+    Get smart answers to your electricity queries instantly.
+  </p>
+</div>
+  </div>
+</section>
+
+
+<section id="demo" class="px-10 md:px-20 py-20 fade-slide">
+  <h2 class="text-3xl md:text-4xl font-bold mb-8 text-center">See GreenBill in Action</h2>
+  
+  <div class="w-full rounded-3xl shadow-lg overflow-hidden relative">
+    <div id="slider" class="flex transition-transform duration-700 gap-4">
+      <img src="s5.png" alt="Demo 1" class="w-full h-96 object-contain rounded-3xl bg-gray-100 border-4 border-gray-300 dark:border-green-900 p-1">
+      <img src="s2.png" alt="Demo 2" class="w-full h-96 object-contain rounded-3xl bg-gray-100 border-4 border-gray-300 dark:border-green-900 p-1">
+      <img src="s9.png" alt="Demo 3" class="w-full h-96 object-contain rounded-3xl bg-gray-100 border-4 border-gray-300 dark:border-green-900 p-1">
+      <img src="s4.png" alt="Demo 4" class="w-full h-96 object-contain rounded-3xl bg-gray-100 border-4 border-gray-300 dark:border-green-900 p-1">
+      <img src="s3.png" alt="Demo 5" class="w-full h-96 object-contain rounded-3xl bg-gray-100 border-4 border-gray-300 dark:border-green-900 p-1">
+    
+      <img src="s5.png" alt="Demo 1 clone" class="w-full h-96 object-contain rounded-3xl bg-gray-100 border-4 border-gray-300 dark:border-green-900 p-1">
+      <img src="s2.png" alt="Demo 2 clone" class="w-full h-96 object-contain rounded-3xl bg-gray-100 border-4 border-gray-300 dark:border-green-900 p-1">
+      <img src="s9.png" alt="Demo 3 clone" class="w-full h-96 object-contain rounded-3xl bg-gray-100 border-4 border-gray-300 dark:border-green-900 p-1">
+      <img src="s4.png" alt="Demo 4 clone" class="w-full h-96 object-contain rounded-3xl bg-gray-100 border-4 border-gray-300 dark:border-green-900 p-1">
+      <img src="s3.png" alt="Demo 5 clone" class="w-full h-96 object-contain rounded-3xl bg-gray-100 border-4 border-gray-300 dark:border-green-900 p-1">
+    </div>
+  </div>
+</section>
+
+
+
+<section id="testimonials" class="px-10 md:px-20 py-20 bg-gray-100 dark:bg-gray-900">
+  <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center">What Our Users Say</h2>
+
+  <div class="overflow-hidden relative">
+    <div class="testimonial-slider flex gap-8">
+
+      <div class="p-6 rounded-2xl shadow-lg bg-white dark:bg-gray-800 transform transition duration-300 hover:scale-105 hover:shadow-2xl min-w-[300px]">
+        <p class="italic">“GreenBill helped me save 20% on my monthly expenses!”</p>
+        <h4 class="mt-4 font-bold">- Priya, Student</h4>
+      </div>
+      <div class="p-6 rounded-2xl shadow-lg bg-white dark:bg-gray-800 transform transition duration-300 hover:scale-105 hover:shadow-2xl min-w-[300px]">
+        <p class="italic">“I love the predictions. It’s like having a personal finance advisor.”</p>
+        <h4 class="mt-4 font-bold">- Raj, Working Professional</h4>
+      </div>
+      <div class="p-6 rounded-2xl shadow-lg bg-white dark:bg-gray-800 transform transition duration-300 hover:scale-105 hover:shadow-2xl min-w-[300px]">
+        <p class="italic">“Super simple and clean interface. Highly recommended!”</p>
+        <h4 class="mt-4 font-bold">- Aditi, Freelancer</h4>
+      </div>
+     
+      <div class="p-6 rounded-2xl shadow-lg bg-white dark:bg-gray-800 transform transition duration-300 hover:scale-105 hover:shadow-2xl min-w-[300px]">
+        <p class="italic">“The insights helped me reduce my bills significantly!”</p>
+        <h4 class="mt-4 font-bold">- Karan, Engineer</h4>
+      </div>
+      <div class="p-6 rounded-2xl shadow-lg bg-white dark:bg-gray-800 transform transition duration-300 hover:scale-105 hover:shadow-2xl min-w-[300px]">
+        <p class="italic">“Very user-friendly and intuitive dashboard!”</p>
+        <h4 class="mt-4 font-bold">- Neha, Teacher</h4>
+      </div>
+
+    
+      <div class="p-6 rounded-2xl shadow-lg bg-white dark:bg-gray-800 transform transition duration-300 hover:scale-105 hover:shadow-2xl min-w-[300px]">
+        <p class="italic">“GreenBill helped me save 20% on my monthly expenses!”</p>
+        <h4 class="mt-4 font-bold">- Priya, Student</h4>
+      </div>
+      <div class="p-6 rounded-2xl shadow-lg bg-white dark:bg-gray-800 transform transition duration-300 hover:scale-105 hover:shadow-2xl min-w-[300px]">
+        <p class="italic">“I love the predictions. It’s like having a personal finance advisor.”</p>
+        <h4 class="mt-4 font-bold">- Raj, Working Professional</h4>
+      </div>
+      <div class="p-6 rounded-2xl shadow-lg bg-white dark:bg-gray-800 transform transition duration-300 hover:scale-105 hover:shadow-2xl min-w-[300px]">
+        <p class="italic">“Super simple and clean interface. Highly recommended!”</p>
+        <h4 class="mt-4 font-bold">- Aditi, Freelancer</h4>
+      </div>
+      <div class="p-6 rounded-2xl shadow-lg bg-white dark:bg-gray-800 transform transition duration-300 hover:scale-105 hover:shadow-2xl min-w-[300px]">
+        <p class="italic">“The insights helped me reduce my bills significantly!”</p>
+        <h4 class="mt-4 font-bold">- Karan, Engineer</h4>
+      </div>
+      <div class="p-6 rounded-2xl shadow-lg bg-white dark:bg-gray-800 transform transition duration-300 hover:scale-105 hover:shadow-2xl min-w-[300px]">
+        <p class="italic">“Very user-friendly and intuitive dashboard!”</p>
+        <h4 class="mt-4 font-bold">- Neha, Teacher</h4>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+  <section id="ratings" class="px-10 md:px-20 py-20 fade-slide">
+    <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center">User Ratings ⭐</h2>
+
+    
+    <div class="max-w-md mx-auto mb-12 p-6 rounded-3xl shadow-lg bg-white dark:bg-gray-800 fade-slide">
+      <h3 class="font-semibold mb-4 text-center text-lg">Submit Your Rating</h3>
+      <form id="rating-form" class="space-y-4 text-center">
+        <div class="flex justify-center gap-2 text-2xl" id="star-container">
+          <span class="cursor-pointer">☆</span>
+          <span class="cursor-pointer">☆</span>
+          <span class="cursor-pointer">☆</span>
+          <span class="cursor-pointer">☆</span>
+          <span class="cursor-pointer">☆</span>
+        </div>
+        <input type="text" name="name" id="username" placeholder="Your Name" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white" required>
+      <textarea type="text" name="comment" id="comment" rows="4" placeholder="Write your comment..." class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white resize-none"></textarea>
+
+        <button type="submit" class="px-6 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition transform hover:scale-105">Submit Rating</button>
+      </form>
+    </div>
+
+
+    <div id="ratings-display" class="grid md:grid-cols-3 gap-8 text-center"></div>
+  </section>
+
+
+  <section id="contact" class="px-10 md:px-20 py-20 bg-gray-100 dark:bg-gray-900 fade-slide">
+    <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center">Contact Us 📬</h2>
+    <div class="max-w-3xl mx-auto bg-white dark:bg-gray-800 rounded-3xl p-10 shadow-lg fade-slide">
+      <form class="space-y-6" id="contactForm">
+        <div>
+          <label class="block mb-2 font-semibold text-gray-700 dark:text-gray-300">Name</label>
+          <input type="text" id="name" name="name" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white" placeholder="Your Name" required>
+        </div>
+        <div>
+          <label class="block mb-2 font-semibold text-gray-700 dark:text-gray-300">Email</label>
+          <input type="email" id="email" name="email" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white" placeholder="Your Email" required>
+        </div>
+        <div>
+          <label class="block mb-2 font-semibold text-gray-700 dark:text-gray-300">Message</label>
+          <textarea id="message" name="message" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white" placeholder="Your Message" rows="5" required></textarea>
+        </div>
+        <button type="submit" class="px-6 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition transform hover:scale-105">Send Message</button>
+      </form>
+    </div>
+  </section>
+
+<footer class="py-16 mt-12 transition-colors duration-500 bg-gray-50 dark:bg-gray-900 text-gray-700 dark:text-gray-200">
+  <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12">
+
+   
+    <div class="flex flex-col">
+      <h3 class="text-xl font-bold mb-6 text-green-700 dark:text-green-400">GreenBill <span class="text-gray-800 dark:text-gray-200">2.0</span></h3>
+      <p class="text-sm leading-relaxed mb-6">
+        Track your bills, manage expenses, and grow your savings effortlessly.  
+        🌱 GreenBill makes money management simple & transparent.
+      </p>
+      <ul class="space-y-3 text-sm">
+        <li>📤 <b>1,250+</b> Bills Uploaded</li>
+        <li>👥 <b>850+</b> Active Users</li>
+        <li>💰 Avg Savings: <b>₹3,450</b> per user</li>
+      </ul>
+    </div>
+
+   
+    <div class="flex flex-col">
+      <h3 class="text-xl font-bold mb-6 text-green-700 dark:text-green-400">Tips & Tricks</h3>
+      <ul class="space-y-3 text-sm">
+        <li>📝 Upload bills regularly for accurate tracking.</li>
+        <li>💡 Review monthly expenses to boost savings.</li>
+        <li>📊 Use predictions to plan smart budgets.</li>
+        <li>🤖 Ask. Learn. Save. — Powered by AI</li>
+        <li class="mt-4 font-semibold text-green-600 dark:text-green-400">💚 Made with love, one bill at a time!</li>
+      </ul>
+    </div>
+
+    
+    <div class="flex flex-col">
+      <h3 class="text-xl font-semibold mb-6 text-green-700 dark:text-green-400">Key Features</h3>
+      <ul class="space-y-3 text-sm">
+        <li>📊 Smart expense tracking</li>
+        <li>🔔 One stop solution</li>
+        <li>💾 Secure cloud storage</li>
+        <li>📈 Insights & analytics</li>
+      </ul>
+    </div>
+
+   
+    <div class="flex flex-col">
+      <h3 class="text-xl font-semibold mb-6 text-green-700 dark:text-green-400">Why GreenBill?</h3>
+      <ul class="space-y-3 text-sm">
+        <li>⚡ Fast & easy to use</li>
+        <li>🔒 Data privacy guaranteed</li>
+        <li>🌍 Access anywhere, anytime</li>
+        <li>💚 Designed for smarter savings</li>
+      </ul>
+    </div>
+
+  </div>
+
+ 
+  <div class="border-t border-gray-300 dark:border-gray-700 mt-12 pt-6 text-center text-sm text-gray-500 dark:text-gray-400">
+    &copy; 2025 GreenBill. All rights reserved. | 🌱 Your bills, our care.
+  </div>
+</footer>
+
+
+
+<div id="toast" class="hidden fixed bottom-5 right-5 bg-gray-800 text-white px-4 py-2 rounded-lg shadow-lg"></div>
+
+
+  <script>
+  
+  const themeBtn = document.getElementById('theme-toggle');
+  const themeIcon = document.getElementById('theme-icon');
+  const html = document.documentElement;
+
+  function setIcon() {
+    themeIcon.textContent = html.classList.contains('dark') ? '☀️' : '🌙';
+  }
+
+  (function () {
+    const stored = localStorage.getItem('theme');
+    if (stored) {
+      stored === 'dark' ? html.classList.add('dark') : html.classList.remove('dark');
+    } else {
+      html.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    }
+    setIcon();
+  })();
+
+  themeBtn.addEventListener('click', () => {
+    const isDark = html.classList.toggle('dark');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    setIcon();
+  });
+
+
+  function showToast(message, type = "success") {
+    const toast = document.getElementById("toast");
+    toast.textContent = message;
+    toast.className =
+      "fixed bottom-5 right-5 px-4 py-2 rounded-lg shadow-lg transition-opacity duration-500 " +
+      (type === "success" ? "bg-green-600 text-white" : "bg-red-600 text-white");
+
+    toast.classList.remove("hidden");
+    toast.style.opacity = "1";
+
+    setTimeout(() => {
+      toast.style.opacity = "0";
+      setTimeout(() => toast.classList.add("hidden"), 500);
+    }, 3000);
+  }
+
+
+  const stars = document.querySelectorAll('#star-container span');
+  let selectedRating = 0;
+
+  stars.forEach((star, idx) => {
+    star.addEventListener('mouseenter', () => highlightStars(idx + 1));
+    star.addEventListener('mouseleave', () => highlightStars(selectedRating));
+    star.addEventListener('click', () => {
+      selectedRating = idx + 1;
+      highlightStars(selectedRating);
+    });
+  });
+
+  function highlightStars(rating) {
+    stars.forEach((star, idx) => {
+      star.textContent = idx < rating ? '★' : '☆';
+    });
+  }
+
+  
+  const form = document.getElementById('rating-form');
+  const display = document.getElementById('ratings-display');
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const username = document.getElementById('username').value.trim();
+    const comment = document.getElementById('comment').value.trim();
+
+    if (selectedRating && username) {
+      try {
+       const res = await fetch("http://localhost:5000/api/review", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ 
+    name: username, 
+    rating: selectedRating, 
+   comment: comment 
+  })
+});
+
+
+        const data = await res.json();
+
+        if (data.success) {
+          const div = document.createElement('div');
+          div.className = 'p-6 rounded-2xl shadow-lg bg-white dark:bg-gray-800 fade-slide';
+          div.innerHTML = `<div class="text-2xl mb-2">${'★'.repeat(selectedRating) + '☆'.repeat(5 - selectedRating)}</div>
+                           <p class="italic text-gray-600 dark:text-gray-300">"${comment || 'No comment provided.'}"</p>
+          <h4 class="mt-4 font-bold">- ${username}</h4>`;
+        display.appendChild(div);
+
+
+          showToast("✅ Review submitted successfully!", "success");
+          form.reset();
+          selectedRating = 0;
+          highlightStars(selectedRating);
+          revealFadeSlide();
+        } else {
+          showToast("❌ Failed to submit review!", "error");
+        }
+      } catch (err) {
+        console.error(err);
+        showToast("❌ Error submitting review!", "error");
+      }
+    } else {
+      showToast("⚠️ Please add a rating and your name!", "error");
+    }
+  });
+
+  
+  const contactForm = document.getElementById("contactForm");
+
+  contactForm?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const data = {
+      name: document.getElementById("name").value,
+      email: document.getElementById("email").value,
+      message: document.getElementById("message").value
+    };
+
+    try {
+      const res = await fetch("http://localhost:5000/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+
+      const result = await res.json();
+      if (result.success) {
+        showToast("✅ Your message has been sent!", "success");
+        contactForm.reset();
+      } else {
+        showToast("❌ Failed to send message!", "error");
+      }
+    } catch (err) {
+      console.error(err);
+      showToast("❌ Error sending message!", "error");
+    }
+  });
+
+  
+  function revealFadeSlide() {
+    document.querySelectorAll('.fade-slide').forEach(el => {
+      const top = el.getBoundingClientRect().top;
+      const height = window.innerHeight;
+      if (top < height - 50) el.classList.add('show');
+    });
+  }
+
+const slider = document.getElementById('slider');
+const slides = slider.children;
+let index = 0;
+const slideCount = slides.length;
+
+
+const slideWidth = slides[0].offsetWidth + 16; 
+
+function moveSlide() {
+  index++;
+  slider.style.transition = 'transform 0.7s ease';
+  slider.style.transform = `translateX(-${index * slideWidth}px)`;
+
+ 
+  if (index >= slideCount - 3) { 
+    setTimeout(() => {
+      slider.style.transition = 'none';
+      index = 0;
+      slider.style.transform = `translateX(0px)`;
+    }, 700); 
+  }
+}
+
+setInterval(moveSlide,1500);
+
+  window.addEventListener('scroll', revealFadeSlide);
+  window.addEventListener('load', revealFadeSlide);
+</script>
+
+</body>
+</html>
