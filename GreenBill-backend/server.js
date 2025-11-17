@@ -15,16 +15,11 @@ const User = require("./models/User");
 const billRoutes = require("./routes/bills");
 
 const app = express();
-app.use(
-  cors({
-    origin: [
-      "http://localhost:5500",                     
-      "https://greenbill.netlify.app"      
-    ],
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
-  })
-);
+app.use(cors({
+  origin: ["https://greenbill.netlify.app", "http://localhost:5500"],
+  credentials: true
+}));
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
