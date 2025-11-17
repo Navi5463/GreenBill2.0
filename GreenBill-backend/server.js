@@ -19,7 +19,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5500",                     
-      "https://greenbill.netlify.app/"      
+      "https://greenbill.netlify.app"      
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
