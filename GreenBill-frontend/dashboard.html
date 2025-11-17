@@ -268,7 +268,8 @@
     try {
       const user = JSON.parse(localStorage.getItem("user"));
       if (!user || !user.id) return;
-      const res = await fetch(`http://localhost:5000/api/forecast/${user.id}`);
+      const res = await fetch(`https://greenbill.onrender.com/api/forecast/${user.id}`);
+
       const data = await res.json();
       if (!data.success) return;
 
