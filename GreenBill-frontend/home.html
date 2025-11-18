@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>GreenBill 2.0</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -46,7 +47,7 @@
   
   
   <div class="flex items-center space-x-2 animate-bounce">
-    <span class="text-4xl font-extrabold text-green-600 dark:text-green-400">🌱</span>
+    <span class="text-4xl font-extrabold text-green-600 dark:text-green-400">🌱</span>`
     <h1 class="text-3xl font-extrabold">
       <span class="text-green-600 dark:text-green-400">GreenBill</span>
       <span class="text-gray-800 dark:text-gray-200">2.0</span>
@@ -89,6 +90,56 @@
 }
 
 
+@media (max-width: 768px) {
+  .container,
+  .main-box,
+  .card,
+  .section,
+  .form-box {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    padding: 15px !important;
+  }
+
+  .navbar {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .cards-wrapper,
+  .content,
+  .sections {
+    display: flex;
+    flex-direction: column !important;
+    gap: 15px !important;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  * {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}
+
+
+@media (max-width: 480px) {
+  h1, h2, h3 {
+    font-size: 18px;
+  }
+
+  button {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+  }
+}
+
 
 
 </style>
@@ -105,23 +156,47 @@
 <body class="bg-gradient-to-br from-gray-100 to-green-50 dark:from-gray-900 dark:to-black text-gray-900 dark:text-white transition-all duration-500">
 
   
-  <nav class="flex justify-between items-center px-8 py-4 shadow-md sticky top-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md z-50">
- <div class="logo text-2xl font-extrabold">
-          <span class="text-green-600 dark:text-green-400">GreenBill</span> <span class="text-gray-800 dark:text-gray-200">2.0</span>
-        </div>
-    <ul class="hidden md:flex gap-6 font-medium">
-      <li><a href="#home" class="hover:text-green-500 dark:hover:text-green-300">Home</a></li>
-      <li><a href="#features" class="hover:text-green-500 dark:hover:text-green-300">Features</a></li>
-      <li><a href="#demo" class="hover:text-green-500 dark:hover:text-green-300">Demo</a></li>
-      <li><a href="#testimonials" class="hover:text-green-500 dark:hover:text-green-300">Testimonials</a></li>
-      <li><a href="#ratings" class="hover:text-green-500 dark:hover:text-green-300">Ratings</a></li>
-      <li><a href="#contact" class="hover:text-green-500 dark:hover:text-green-300">Contact Us</a></li>
-    </ul>
-   <button id="theme-toggle" 
-  class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700">
-  <span id="theme-icon">🌞</span>
-</button>
-  </nav>
+ <nav class="flex justify-between items-center px-8 py-4 shadow-md sticky top-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md z-50">
+
+ 
+  <div class="logo text-2xl font-extrabold">
+    <span class="text-green-600 dark:text-green-400">GreenBill</span>
+    <span class="text-gray-800 dark:text-gray-200">2.0</span>
+  </div>
+
+
+  <div id="menu-btn" class="text-3xl md:hidden cursor-pointer">
+    ☰
+  </div>
+
+  <ul id="nav-links" class="hidden md:flex gap-6 font-medium">
+    <li><a href="#home" class="hover:text-green-500 dark:hover:text-green-300">Home</a></li>
+    <li><a href="#features" class="hover:text-green-500 dark:hover:text-green-300">Features</a></li>
+    <li><a href="#demo" class="hover:text-green-500 dark:hover:text-green-300">Demo</a></li>
+    <li><a href="#testimonials" class="hover:text-green-500 dark:hover:text-green-300">Testimonials</a></li>
+    <li><a href="#ratings" class="hover:text-green-500 dark:hover:text-green-300">Ratings</a></li>
+    <li><a href="#contact" class="hover:text-green-500 dark:hover:text-green-300">Contact Us</a></li>
+  </ul>
+
+
+  <button id="theme-toggle"
+    class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700 ml-4">
+    <span id="theme-icon">🌞</span>
+  </button>
+
+</nav>
+
+
+<ul id="mobile-menu"
+  class="hidden flex-col gap-4 font-medium bg-white dark:bg-gray-900 shadow-md p-6 md:hidden">
+  <li><a href="#home" class="hover:text-green-500 dark:hover:text-green-300">Home</a></li>
+  <li><a href="#features" class="hover:text-green-500 dark:hover:text-green-300">Features</a></li>
+  <li><a href="#demo" class="hover:text-green-500 dark:hover:text-green-300">Demo</a></li>
+  <li><a href="#testimonials" class="hover:text-green-500 dark:hover:text-green-300">Testimonials</a></li>
+  <li><a href="#ratings" class="hover:text-green-500 dark:hover:text-green-300">Ratings</a></li>
+  <li><a href="#contact" class="hover:text-green-500 dark:hover:text-green-300">Contact Us</a></li>
+</ul>
+
 
 
   <section id="home" class="flex flex-col md:flex-row items-center justify-between px-10 md:px-20 py-20 min-h-screen">
@@ -355,6 +430,16 @@
 
 
   <script>
+  document.addEventListener("DOMContentLoaded", () => {
+
+     const menuBtn = document.getElementById("menu-btn");
+  const mobileMenu = document.getElementById("mobile-menu");
+
+  menuBtn?.addEventListener("click", () => {
+    mobileMenu.classList.toggle("hidden");
+    mobileMenu.classList.toggle("animate-fade");
+  });
+
   
   const themeBtn = document.getElementById('theme-toggle');
   const themeIcon = document.getElementById('theme-icon');
@@ -428,7 +513,7 @@
 
     if (selectedRating && username) {
       try {
-       const res = await fetch("http://localhost:5000/api/review", {
+       const res = await fetch("https://greenbill.onrender.com/api/review", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({ 
@@ -479,7 +564,7 @@
     };
 
     try {
-      const res = await fetch("http://localhost:5000/api/contact", {
+      const res = await fetch("https://greenbill.onrender.com/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
@@ -534,6 +619,8 @@ setInterval(moveSlide,1500);
 
   window.addEventListener('scroll', revealFadeSlide);
   window.addEventListener('load', revealFadeSlide);
+
+  });
 </script>
 
 </body>

@@ -1,50 +1,48 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>GreenBill 2.0 — Dashboard</title>
 
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script> tailwind.config = { darkMode: 'class' };</script>
 
+  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+
   <style>
     :root { --font-heading: 'Poppins', sans-serif; --font-body: 'Inter', sans-serif; }
     h1,h2,h3,h4,.logo { font-family: var(--font-heading); }
     body { font-family: var(--font-body); }
-  
-   
+
     @keyframes rotateIcon { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     .rotate-icon { animation: rotateIcon 2s linear infinite; font-size: 3rem; }
 
-    
+    /* custom scrollbar for sidebar */
     #sidebar::-webkit-scrollbar { width: 6px; }
     #sidebar::-webkit-scrollbar-thumb { background-color: rgba(34,197,94,0.6); border-radius: 3px; }
-  </style>
-  </style>
 
-  <script>
-    (function () {
-      const stored = localStorage.getItem('theme');
-      if (stored === 'light') document.documentElement.classList.remove('dark');
-      else document.documentElement.classList.add('dark');
-      if (!stored) localStorage.setItem('theme','dark');
-    })();
-  </script>
+    /* small helpers */
+    .no-select { -webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none; }
+  </style>
 </head>
 
 <body class="bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300">
   <div class="min-h-screen flex">
 
-   
-   <aside id="sidebar" class="fixed top-0 left-0 w-72 h-screen flex flex-col bg-white/90 dark:bg-gray-800/90 backdrop-blur border-r border-gray-200 dark:border-gray-700 z-50">
-      
+    <!-- Sidebar -->
+    <aside id="sidebar"
+      class="fixed top-0 left-0 w-72 h-screen flex flex-col bg-white/90 dark:bg-gray-800/90 backdrop-blur border-r border-gray-200 dark:border-gray-700 z-50
+             transform -translate-x-full md:translate-x-0 transition-transform duration-300">
       <div class="px-6 py-5 flex items-center justify-between">
         <div class="logo text-2xl font-extrabold">
           <span class="text-green-600 dark:text-green-400">GreenBill</span>
           <span class="text-gray-800 dark:text-gray-200">2.0</span>
         </div>
+        <!-- close for mobile -->
+        <button id="sidebar-close" class="md:hidden px-2 py-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">✕</button>
       </div>
 
       <nav class="px-3 py-2 space-y-1 text-[15px] flex-1 overflow-y-auto">
@@ -57,50 +55,50 @@
         <a href="bill.html" class="group flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700">
           <span>⬆️</span><span>Upload Bill</span>
         </a>
-       <a href="#" id="helpSupportBtn" class="group flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700">
-  <span>🤖</span><span>GreenBot</span>
-</a>
+        <a href="#" id="helpSupportBtn" class="group flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700">
+          <span>🤖</span><span>GreenBot</span>
+        </a>
+
         <div class="mt-auto px-6 py-4 text-xs text-gray-500 dark:text-gray-400">
           © 2025 GreenBill 2.0
         </div>
       </nav>
     </aside>
- 
-  <div class="flex-1 flex flex-col min-w-0 md:ml-72">
-     <header class="sticky top-0 z-40 bg-white/80 dark:bg-gray-800/80 backdrop-blur border-b border-gray-200 dark:border-gray-700">
+
+    <!-- overlay shown only when sidebar active on mobile -->
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black/40 z-40 hidden md:hidden"></div>
+
+    <!-- Main area -->
+    <div class="flex-1 flex flex-col min-w-0 md:ml-72">
+      <header class="sticky top-0 z-40 bg-white/80 dark:bg-gray-800/80 backdrop-blur border-b border-gray-200 dark:border-gray-700">
         <div class="flex items-center justify-between px-4 md:px-6 py-3">
           <div class="flex items-center gap-3">
-            <button id="mobile-toggle" class="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-xl bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600">☰</button>
-            <div class="md:hidden logo text-xl font-extrabold">
+            <button id="mobile-toggle" aria-label="Open sidebar" class="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-xl bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 no-select">☰</button>
+            <div class="hidden md:block logo text-xl font-extrabold">
               <span class="text-green-600 dark:text-green-400">GreenBill</span> <span class="text-gray-800 dark:text-gray-200">2.0</span>
             </div>
           </div>
 
           <div class="flex items-center gap-2">
-            <div class="flex items-center gap-2"> 
-              <button id="theme-toggle" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700"> 
-                <span id="theme-icon">🌙</span> 
-              </button> 
-              <button id="logout" class="px-3 py-2 bg-red-600 text-white rounded-xl hover:bg-red-700 text-sm">Logout</button> 
-            </div> 
+            <button id="theme-toggle" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700" aria-label="Toggle theme">
+              <span id="theme-icon" class="text-lg">🌙</span>
+            </button>
+            <button id="logout" class="px-3 py-2 bg-red-600 text-white rounded-xl hover:bg-red-700 text-sm">Logout</button>
           </div>
         </div>
       </header>
 
-      
       <main class="p-4 md:p-6 space-y-6 max-w-5xl mx-auto pt-24">
-        
         <section>
           <h1 id="welcome-text" class="text-2xl md:text-3xl font-extrabold">Hi, User 👋</h1>
           <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Your latest electricity usage and forecast.</p>
         </section>
 
-      
         <div class="p-6 rounded-2xl bg-white dark:bg-gray-800 shadow">
           <div class="flex items-center justify-between mb-4">
             <h3 class="text-xl font-bold">Bill Summary</h3><span class="text-2xl">📄</span>
           </div>
-          <div class="grid grid-cols-3 gap-4 text-center">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
             <div class="p-4 rounded-xl bg-green-50 dark:bg-green-900/30">
               <div class="text-sm opacity-75">Units (kWh)</div>
               <div id="units" class="text-2xl font-bold">--</div>
@@ -116,17 +114,19 @@
           </div>
         </div>
 
-    
-        <div class="p-6 rounded-2xl bg-white dark:bg-gray-800 shadow">
-          <h3 class="text-xl font-bold mb-4 flex items-center gap-2">⚡ Energy Forecast</h3>
-          <canvas id="forecastChart" height="150"></canvas>
-          <p class="text-sm mt-2" id="forecastText"></p>
-        </div>
+       <div class="p-6 rounded-2xl bg-white dark:bg-gray-800 shadow">
+  <h3 class="text-xl font-bold mb-4 flex items-center gap-2">⚡ Energy Forecast</h3>
 
- 
+  <!-- FIXED: Chart container with controlled height -->
+  <div class="w-full h-64 md:h-96">
+    <canvas id="forecastChart"></canvas>
+  </div>
+
+  <p class="text-sm mt-2" id="forecastText"></p>
+</div>
+
+
         <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-
-         
           <div class="p-6 rounded-2xl bg-gray-100 dark:bg-gray-800 shadow">
             <div class="flex items-center justify-between mb-4">
               <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100">Household Energy Audit</h3>
@@ -134,54 +134,58 @@
             </div>
 
             <form id="energyForm" class="space-y-4 text-sm text-gray-800 dark:text-gray-200">
-             
-              <div class="grid grid-cols-3 gap-2 items-center">
-                <label class="flex items-center space-x-1">
-                  <input type="checkbox" id="ac" class="accent-green-500">AC
+              <!-- Each row is 3 cols on desktop, stack on small screens -->
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 items-center">
+                <label class="flex items-center space-x-2">
+                  <input type="checkbox" id="ac" class="accent-green-500"><span>AC</span>
                 </label>
                 <input type="number" min="0" max="24" placeholder="Hours" id="ac_hours" class="border rounded px-2 py-1 w-full bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
                 <input type="number" min="1" placeholder="Qty" id="ac_qty" class="border rounded px-2 py-1 w-full bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
               </div>
 
-            
-              <div class="grid grid-cols-3 gap-2 items-center">
-                <label class="flex items-center space-x-1">
-                  <input type="checkbox" id="heater" class="accent-green-500">Heater
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 items-center">
+                <label class="flex items-center space-x-2">
+                  <input type="checkbox" id="heater" class="accent-green-500"><span>Heater</span>
                 </label>
                 <input type="number" min="0" max="24" placeholder="Hours" id="heater_hours" class="border rounded px-2 py-1 w-full bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
                 <input type="number" min="1" placeholder="Qty" id="heater_qty" class="border rounded px-2 py-1 w-full bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
               </div>
-              <div class="grid grid-cols-3 gap-2 items-center">
-                <label class="flex items-center space-x-1">
-                  <input type="checkbox" id="fridge" class="accent-green-500">Fridge
+
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 items-center">
+                <label class="flex items-center space-x-2">
+                  <input type="checkbox" id="fridge" class="accent-green-500"><span>Fridge</span>
                 </label>
                 <input type="number" min="0" max="24" placeholder="Hours" id="fridge_hours" class="border rounded px-2 py-1 w-full bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
                 <input type="number" min="1" placeholder="Qty" id="fridge_qty" class="border rounded px-2 py-1 w-full bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
               </div>
-              <div class="grid grid-cols-3 gap-2 items-center">
-                <label class="flex items-center space-x-1">
-                  <input type="checkbox" id="washing" class="accent-green-500">Washing Machine
+
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 items-center">
+                <label class="flex items-center space-x-2">
+                  <input type="checkbox" id="washing" class="accent-green-500"><span>Washing Machine</span>
                 </label>
                 <input type="number" min="0" max="24" placeholder="Hours" id="washing_hours" class="border rounded px-2 py-1 w-full bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
                 <input type="number" min="1" placeholder="Qty" id="washing_qty" class="border rounded px-2 py-1 w-full bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
               </div>
-              <div class="grid grid-cols-3 gap-2 items-center">
-                <label class="flex items-center space-x-1">
-                  <input type="checkbox" id="led" class="accent-green-500">LED Lights
+
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 items-center">
+                <label class="flex items-center space-x-2">
+                  <input type="checkbox" id="led" class="accent-green-500"><span>LED Lights</span>
                 </label>
                 <input type="number" min="0" max="24" placeholder="Hours" id="led_hours" class="border rounded px-2 py-1 w-full bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
                 <input type="number" min="1" placeholder="Qty" id="led_qty" class="border rounded px-2 py-1 w-full bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
               </div>
-              <div class="grid grid-cols-3 gap-2 items-center">
-                <label class="flex items-center space-x-1">
-                  <input type="checkbox" id="tv" class="accent-green-500">TV / Entertainment
+
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 items-center">
+                <label class="flex items-center space-x-2">
+                  <input type="checkbox" id="tv" class="accent-green-500"><span>TV / Entertainment</span>
                 </label>
                 <input type="number" min="0" max="24" placeholder="Hours" id="tv_hours" class="border rounded px-2 py-1 w-full bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
                 <input type="number" min="1" placeholder="Qty" id="tv_qty" class="border rounded px-2 py-1 w-full bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
               </div>
-              <div class="grid grid-cols-3 gap-2 items-center">
-                <label class="flex items-center space-x-1">
-                  <input type="checkbox" id="fan" class="accent-green-500">Fan
+
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 items-center">
+                <label class="flex items-center space-x-2">
+                  <input type="checkbox" id="fan" class="accent-green-500"><span>Fan</span>
                 </label>
                 <input type="number" min="0" max="24" placeholder="Hours" id="fan_hours" class="border rounded px-2 py-1 w-full bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
                 <input type="number" min="1" placeholder="Qty" id="fan_qty" class="border rounded px-2 py-1 w-full bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
@@ -193,230 +197,302 @@
             </form>
           </div>
 
-        
           <div class="space-y-6">
             <div id="ecoGuideContainer" class="p-6 rounded-2xl bg-green-100 dark:bg-green-900 shadow h-full">
-          
               <div id="ecoPlaceholder" class="text-center py-10 text-green-700 dark:text-green-300">
                 <div class="rotate-icon">💚</div>
                 <p class="text-lg font-medium mt-4">Your personalized EcoGuide tips will appear here 🌿</p>
                 <p class="text-sm opacity-80">Fill out the form on the left and hit Submit to see recommendations.</p>
               </div>
-            
-             
               <ul id="ecoContent" class="space-y-4 text-sm text-green-900 dark:text-green-100 list-none pl-0 hidden"></ul>
             </div>
           </div>
-
         </div>
-
       </main>
     </div>
   </div>
 
+  <!-- Chatbot popup -->
   <div id="chatbotPopup" class="fixed inset-0 bg-black/40 z-50 hidden items-center justify-center">
-  <div class="relative w-[360px] h-[500px] bg-white dark:bg-gray-800 rounded-2xl shadow-lg flex flex-col">
-    <div class="flex justify-between items-center p-4 bg-green-600 text-white rounded-t-2xl">
-      <h1 class="font-bold">💚GreenBot</h1>
-      <button id="closeChatbot" class="text-white text-xl font-bold">×</button>
+    <div class="relative w-[360px] h-[500px] bg-white dark:bg-gray-800 rounded-2xl shadow-lg flex flex-col">
+      <div class="flex justify-between items-center p-4 bg-green-600 text-white rounded-t-2xl">
+        <h1 class="font-bold">💚GreenBot</h1>
+        <button id="closeChatbot" class="text-white text-xl font-bold">×</button>
+      </div>
+      <iframe src="chatbot.html" class="flex-1 w-full h-full rounded-b-2xl" frameborder="0"></iframe>
     </div>
-    <iframe src="chatbot.html" class="flex-1 w-full h-full rounded-b-2xl" frameborder="0"></iframe>
   </div>
-</div>
 
+  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- SCRIPT: all logic wrapped in DOMContentLoaded -->
   <script>
- 
-  (function(){
-    const html=document.documentElement;
-    const themeBtn=document.getElementById('theme-toggle');
-    const themeIcon=document.getElementById('theme-icon');
-    html.classList.add('dark');
-    localStorage.setItem('theme','dark');
-    function setIcon(){themeIcon.textContent=html.classList.contains('dark')?'☀️':'🌙';}
-    setIcon();
-    themeBtn.addEventListener('click',()=>{
-      html.classList.toggle('dark');
-      localStorage.setItem('theme',html.classList.contains('dark')?'dark':'light');
-      setIcon();
-    });
-  })();
+    document.addEventListener('DOMContentLoaded', () => {
+      // Elements
+      const sidebar = document.getElementById('sidebar');
+      const mobileToggle = document.getElementById('mobile-toggle');
+      const sidebarClose = document.getElementById('sidebar-close');
+      const sidebarOverlay = document.getElementById('sidebar-overlay');
+      const themeBtn = document.getElementById('theme-toggle');
+      const themeIcon = document.getElementById('theme-icon');
+      const html = document.documentElement;
+      const logoutBtn = document.getElementById('logout');
+      const helpBtn = document.getElementById('helpSupportBtn');
+      const chatbotPopup = document.getElementById('chatbotPopup');
+      const closeChatbot = document.getElementById('closeChatbot');
 
-  (function(){
-    const user=JSON.parse(localStorage.getItem('user'))||{name:'User'};
-    document.getElementById('welcome-text').textContent=`Hi, ${user.name} 👋`;
-  })();
+      // Safe guards
+      function el(id){ return document.getElementById(id); }
 
-  function setSummary(bill){
-    document.getElementById('units').textContent=bill.units??'---';
-    document.getElementById('amount').textContent=bill.amount??'---';
-    document.getElementById('period').textContent=(bill.month&&bill.year)?`${bill.month} ${bill.year}`:'---';
-  }
+      // --- Sidebar mobile toggling ---
+      function openSidebar() {
+        sidebar.classList.remove('-translate-x-full');
+        sidebarOverlay.classList.remove('hidden');
+      }
+      function closeSidebar() {
+        sidebar.classList.add('-translate-x-full');
+        sidebarOverlay.classList.add('hidden');
+      }
 
-  async function loadDashboard(){
-    const manualBill=JSON.parse(localStorage.getItem('manualBill')||'null');
-    const bills=JSON.parse(localStorage.getItem('bills')||'[]');
-    const latestBill=bills.length?bills[bills.length-1]:null;
-    let billToShow=null;
-    if(manualBill&&manualBill.units&&manualBill.amount){billToShow=manualBill;}
-    else if(latestBill){billToShow=latestBill;}
-    else{billToShow={units:'---',amount:'---',month:'',year:''};}
-    setSummary(billToShow);
-  }
+      if (mobileToggle) mobileToggle.addEventListener('click', openSidebar);
+      if (sidebarClose) sidebarClose.addEventListener('click', closeSidebar);
+      if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeSidebar);
 
-  async function loadForecast() {
-    try {
-      const user = JSON.parse(localStorage.getItem("user"));
-      if (!user || !user.id) return;
-      const res = await fetch(`https://greenbill.onrender.com/api/forecast/${user.id}`);
-
-      const data = await res.json();
-      if (!data.success) return;
-
-      const pastMonths = data.past.map((p) => `${p.month} ${p.year}`);
-      const pastUnits = data.past.map((p) => p.units);
-      const allLabels = [...pastMonths, "Next Month"];
-      const allData = [...pastUnits, data.prediction];
-
-      const ctx = document.getElementById("forecastChart").getContext("2d");
-      new Chart(ctx, {
-        type: "line",
-        data: {
-          labels: allLabels,
-          datasets: [{ label: "Units (kWh)", data: allData, borderColor: "#22c55e", backgroundColor: "rgba(34,197,94,0.2)", tension: 0.3 }]
-        },
-        options: { responsive: true, scales: { y: { beginAtZero: true } } },
+      // close sidebar on Escape
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          // close sidebar if on mobile
+          if (!sidebar.classList.contains('-translate-x-full') && window.innerWidth < 768) closeSidebar();
+          // close chatbot if open
+          if (!chatbotPopup.classList.contains('hidden')) chatbotPopup.classList.add('hidden');
+        }
       });
 
-      document.getElementById("forecastText").textContent = `⚡ Next month predicted usage: ${data.prediction} kWh`;
-    } catch (err) { console.error("Forecast error:", err); }
-  }
+      // --- Theme handling ---
+      (function initTheme(){
+        const stored = localStorage.getItem('theme');
+        if (stored === 'light') html.classList.remove('dark');
+        else if (stored === 'dark') html.classList.add('dark');
+        else {
+          // default: prefer system
+          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (prefersDark) html.classList.add('dark');
+          else html.classList.remove('dark');
+          localStorage.setItem('theme', prefersDark ? 'dark' : 'light');
+        }
+        updateThemeIcon();
+      })();
 
-  
-const ecoPlaceholder=document.getElementById('ecoPlaceholder');
+      function updateThemeIcon(){
+        themeIcon.textContent = html.classList.contains('dark') ? '☀️' : '🌙';
+      }
 
+      if (themeBtn) themeBtn.addEventListener('click', () => {
+        const isDark = html.classList.toggle('dark');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        updateThemeIcon();
+      });
 
-document.getElementById('energyForm').addEventListener('submit', function(e){
-  e.preventDefault();
+      // --- Logout ---
+      if (logoutBtn) logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('user');
+        localStorage.removeItem('manualBill');
+        localStorage.removeItem('bills');
+        // navigate to login page (adjust if path differs)
+        window.location.href = 'login.html';
+      });
 
-  document.getElementById('ecoGuideContainer').classList.remove('hidden');
+      // --- Chatbot popup handling ---
+      if (helpBtn) helpBtn.addEventListener('click', () => {
+        chatbotPopup.classList.remove('hidden');
+      });
+      if (closeChatbot) closeChatbot.addEventListener('click', () => {
+        chatbotPopup.classList.add('hidden');
+      });
+      // clicking outside chatbot content closes it
+      if (chatbotPopup) {
+        chatbotPopup.addEventListener('click', (e) => {
+          if (e.target === chatbotPopup) chatbotPopup.classList.add('hidden');
+        });
+      }
 
+      // --- Dashboard data + forecast (local data or remote fetch) ---
+      function setSummary(bill) {
+        document.getElementById('units').textContent = bill?.units ?? '---';
+        document.getElementById('amount').textContent = bill?.amount ?? '---';
+        document.getElementById('period').textContent = (bill?.month && bill?.year) ? `${bill.month} ${bill.year}` : '---';
+      }
 
-  const applianceData = {
-    'AC': 1.5,
-    'Heater': 1.2,
-    'Fridge': 0.15,
-    'Washing Machine': 0.5,
-    'LED Lights': 0.01,
-    'TV / Entertainment': 0.1,
-    'Fan': 0.05
-  };
+      async function loadDashboard() {
+        try {
+          const manualBill = JSON.parse(localStorage.getItem('manualBill') || 'null');
+          const bills = JSON.parse(localStorage.getItem('bills') || '[]');
+          const latestBill = bills.length ? bills[bills.length - 1] : null;
+          let billToShow = null;
+          if (manualBill && manualBill.units && manualBill.amount) billToShow = manualBill;
+          else if (latestBill) billToShow = latestBill;
+          else billToShow = { units: '---', amount: '---', month: '', year: '' };
+          setSummary(billToShow);
+        } catch (err) {
+          console.error('loadDashboard error', err);
+        }
+      }
 
-  const ecoTips = {
-    'AC': ['Reduce usage or set temperature slightly higher.', 'Clean filters regularly.'],
-    'Heater': ['Use only when necessary.', 'Keep doors/windows closed.'],
-    'Fridge': ['Keep door closed.', 'Check seals, optimal temperature.'],
-    'Washing Machine': ['Run full loads.', 'Use efficient cycles.'],
-    'LED Lights': ['Use only when needed.', 'Turn off when leaving room.'],
-    'TV / Entertainment': ['Limit hours.', 'Turn off standby mode.'],
-    'Fan': ['Switch off when not in use.', 'Use ceiling fan or energy saver mode.']
-  };
+      // Chart: keep a ref so we don't create multiple charts
+      let forecastChart = null;
+      async function loadForecast() {
+        const ctxEl = document.getElementById('forecastChart');
+        if (!ctxEl) return;
+        try {
+          const user = JSON.parse(localStorage.getItem('user') || 'null');
+          // If user and API available, attempt fetch. Otherwise use demo data.
+          if (user && user.id) {
+            try {
+              const res = await fetch(`https://greenbill.onrender.com/api/forecast/${user.id}`);
+              const data = await res.json();
+              if (data?.success) {
+                drawForecastChart([...data.past.map(p => `${p.month} ${p.year}`), 'Next'], [...data.past.map(p => p.units), data.prediction], data.prediction);
+                return;
+              }
+            } catch (err) {
+              console.warn('Forecast API failed, using demo data', err);
+            }
+          }
 
-  const applianceIds = {
-    'AC': 'ac',
-    'Heater': 'heater',
-    'Fridge': 'fridge',
-    'Washing Machine': 'washing',
-    'LED Lights': 'led',
-    'TV / Entertainment': 'tv',
-    'Fan': 'fan'
-  };
+          // fallback demo data
+          const labels = ['Jun 2025','Jul 2025','Aug 2025','Next Month'];
+          const values = [120, 140, 130, 135];
+          drawForecastChart(labels, values, values[values.length-1]);
+        } catch (err) {
+          console.error('loadForecast error', err);
+        }
+      }
 
-  let results = [];
-  let totalEnergy=0;
+      function drawForecastChart(labels, dataValues, prediction) {
+        const ctx = document.getElementById('forecastChart').getContext('2d');
 
-  for(const app in applianceData){
-    const id = applianceIds[app];
-    const checkbox = document.getElementById(id);
-    const hoursInput = document.getElementById(id + '_hours');
-    const qtyInput = document.getElementById(id + '_qty');
+        // destroy existing chart if present
+        if (forecastChart) {
+          forecastChart.destroy();
+          forecastChart = null;
+        }
 
-    if(!checkbox || !hoursInput || !qtyInput) continue;
+        forecastChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: 'Units (kWh)',
+              data: dataValues,
+              borderColor: '#22c55e',
+              backgroundColor: 'rgba(34,197,94,0.16)',
+              tension: 0.3,
+              fill: true,
+              pointRadius: 3
+            }]
+          },
+          options: {
+  responsive: true,
+  maintainAspectRatio: false,  
 
-    const hours = Number(hoursInput.value) || 0;
-    const qty = Number(qtyInput.value) || 1;
+            scales: {
+              y: { beginAtZero: true }
+            },
+            plugins: { legend: { display: false } }
+          }
+        });
 
-    if(checkbox.checked && hours>0){
-      const energy = applianceData[app] * hours * qty;
-      totalEnergy+=energy;
-      results.push({app, energy, qty, hours});
-    }
-  }
+        const ft = document.getElementById('forecastText');
+        if (ft) ft.textContent = prediction ? `⚡ Next month predicted usage: ${prediction} kWh` : '';
+      }
 
- 
-  results.sort((a,b)=>b.energy-a.energy);
+      // --- Energy audit form ---
+      const energyForm = document.getElementById('energyForm');
+      const ecoPlaceholder = document.getElementById('ecoPlaceholder');
+      const ecoContent = document.getElementById('ecoContent');
 
-  const ecoPanel = document.getElementById('ecoGuide');
-  const ecoContent = document.getElementById('ecoContent');
-  ecoContent.innerHTML = '';
+      if (energyForm) {
+        energyForm.addEventListener('submit', (e) => {
+          e.preventDefault();
 
-  if (results.length) {
-    ecoPlaceholder.classList.add('hidden');
-    ecoContent.classList.remove('hidden');
+          document.getElementById('ecoGuideContainer')?.classList.remove('hidden');
 
-    results.forEach(r => {
-      const li = document.createElement('li');
-      li.className = "p-4 rounded-xl bg-white dark:bg-green-800 shadow-md";
-      li.innerHTML = `
-        <div class="font-semibold">${r.app} — ${r.hours} hrs/day 
-          <span class="text-green-700 dark:text-green-300">(Impact: ${r.energy.toFixed(2)} kWh)</span>
-        </div>
-        <ul class="list-disc pl-5 mt-1 text-green-800 dark:text-green-200">
-          ${ecoTips[r.app].map(t => `<li>${t}</li>`).join('')}
-        </ul>
-      `;
-      ecoContent.appendChild(li);
+          const applianceData = {
+            'AC': 1.5,
+            'Heater': 1.2,
+            'Fridge': 0.15,
+            'Washing Machine': 0.5,
+            'LED Lights': 0.01,
+            'TV / Entertainment': 0.1,
+            'Fan': 0.05
+          };
+
+          const ecoTips = {
+            'AC': ['Reduce usage or set temperature slightly higher.', 'Clean filters regularly.'],
+            'Heater': ['Use only when necessary.', 'Keep doors/windows closed.'],
+            'Fridge': ['Keep door closed.', 'Check seals, optimal temperature.'],
+            'Washing Machine': ['Run full loads.', 'Use efficient cycles.'],
+            'LED Lights': ['Use only when needed.', 'Turn off when leaving room.'],
+            'TV / Entertainment': ['Limit hours.', 'Turn off standby mode.'],
+            'Fan': ['Switch off when not in use.', 'Use ceiling fan or energy saver mode.']
+          };
+
+          const applianceIds = {
+            'AC': 'ac',
+            'Heater': 'heater',
+            'Fridge': 'fridge',
+            'Washing Machine': 'washing',
+            'LED Lights': 'led',
+            'TV / Entertainment': 'tv',
+            'Fan': 'fan'
+          };
+
+          let results = [];
+
+          for (const app in applianceData) {
+            const id = applianceIds[app];
+            const checkbox = document.getElementById(id);
+            const hoursInput = document.getElementById(id + '_hours');
+            const qtyInput = document.getElementById(id + '_qty');
+            if (!checkbox || !hoursInput || !qtyInput) continue;
+            const hours = Number(hoursInput.value) || 0;
+            const qty = Number(qtyInput.value) || 1;
+            if (checkbox.checked && hours > 0) {
+              const energy = applianceData[app] * hours * qty;
+              results.push({ app, energy, qty, hours });
+            }
+          }
+
+          results.sort((a, b) => b.energy - a.energy);
+
+          ecoContent.innerHTML = '';
+          if (results.length) {
+            ecoPlaceholder?.classList.add('hidden');
+            ecoContent?.classList.remove('hidden');
+            results.forEach(r => {
+              const li = document.createElement('li');
+              li.className = "p-4 rounded-xl bg-white dark:bg-green-800 shadow-md";
+              const tips = (ecoTips[r.app] || []).map(t => `<li>${t}</li>`).join('');
+              li.innerHTML = `
+                <div class="font-semibold">${r.app} — ${r.hours} hrs/day 
+                  <span class="text-green-700 dark:text-green-300">(Impact: ${r.energy.toFixed(2)} kWh)</span>
+                </div>
+                <ul class="list-disc pl-5 mt-1 text-green-800 dark:text-green-200">${tips}</ul>
+              `;
+              ecoContent.appendChild(li);
+            });
+          } else {
+            ecoContent.classList.add('hidden');
+            ecoPlaceholder?.classList.remove('hidden');
+          }
+        });
+      }
+
+      // initialize page
+      loadDashboard();
+      loadForecast();
     });
-  } else {
-    ecoContent.classList.add('hidden');
-    ecoPlaceholder.classList.remove('hidden');
-
-  }
-  
-});
-
-
-  window.addEventListener("DOMContentLoaded",()=>{ loadDashboard(); loadForecast(); });
-
-
-  document.getElementById("logout").addEventListener("click", () => {
-    localStorage.removeItem('user');
-    localStorage.removeItem('manualBill');
-    localStorage.removeItem('bills');
-    window.location.href = "login.html";
-  });
-
-
-  const helpBtn = document.getElementById('helpSupportBtn');
-  const chatbotPopup = document.getElementById('chatbotPopup');
-  const closeBtn = document.getElementById('closeChatbot');
-
-  helpBtn.addEventListener('click', () => {
-    chatbotPopup.classList.remove('hidden');
-  });
-
-  closeBtn.addEventListener('click', () => {
-    chatbotPopup.classList.add('hidden');
-  });
-
- 
-  chatbotPopup.addEventListener('click', (e) => {
-    if (e.target === chatbotPopup) {
-      chatbotPopup.classList.add('hidden');
-    }
-  });
-  loadDashboard();
-  loadForecast();
   </script>
 </body>
 </html>
