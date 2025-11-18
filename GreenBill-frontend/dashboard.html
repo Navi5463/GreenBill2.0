@@ -339,19 +339,25 @@ function closeSidebar() {
       }
 
       async function loadDashboard() {
-        try {
-          const manualBill = JSON.parse(localStorage.getItem('manualBill') || 'null');
-          const bills = JSON.parse(localStorage.getItem('bills') || '[]');
-          const latestBill = bills.length ? bills[bills.length - 1] : null;
-          let billToShow = null;
-          if (manualBill && manualBill.units && manualBill.amount) billToShow = manualBill;
-          else if (latestBill) billToShow = latestBill;
-          else billToShow = { units: '---', amount: '---', month: '', year: '' };
-          setSummary(billToShow);
-        } catch (err) {
-          console.error('loadDashboard error', err);
-        }
-      }
+  try {
+    const bills = JSON.parse(localStorage.getItem('bills') || '[]'); // all uploaded bills
+    const manualBill = JSON.parse(localStorage.getItem('manualBill') || 'null'); // manually added bill
+    let billToShow = null;
+
+    if (bills.length) {
+      billToShow = bills[bills.length - 1]; // last uploaded bill
+    } else if (manualBill && manualBill.units && manualBill.amount) {
+      billToShow = manualBill; // fallback to manual
+    } else {
+      billToShow = { units: '---', amount: '---', month: '', year: '' };
+    }
+
+    setSummary(billToShow);
+  } catch (err) {
+    console.error('loadDashboard error', err);
+  }
+}
+
 
       // Chart: keep a ref so we don't create multiple charts
       let forecastChart = null;
