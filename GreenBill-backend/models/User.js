@@ -11,6 +11,9 @@ const userSchema = new mongoose.Schema({
   avatarUrl: { type: String },
   role: { type: String, default: "user" }
 
+   resetToken: { type: String },
+  resetTokenExpiry: { type: Date }
+
 }, 
 { timestamps: true } 
 );
