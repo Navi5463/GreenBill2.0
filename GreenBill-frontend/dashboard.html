@@ -362,7 +362,7 @@ function closeSidebar() {
         
           if (user && user.id) {
             try {
-              const res = await fetch(`https://greenbill.onrender.com/api/forecast/${user.id}`);
+              const res = await fetch(`https://greenbill2-0-iouj.onrender.com/api/forecast/${user.id}`);
               const data = await res.json();
               if (data?.success) {
                 drawForecastChart([...data.past.map(p => `${p.month} ${p.year}`), 'Next'], [...data.past.map(p => p.units), data.prediction], data.prediction);
