@@ -15,11 +15,29 @@ const User = require("./models/User");
 const billRoutes = require("./routes/bills");
 
 const app = express();
-app.use(cors({
-  origin: ["https://greenbill.netlify.app", "http://localhost:5500"],
-  credentials: true
-}));
 
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://greenbill.netlify.app"
+];
+
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  }
+
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
+
+  next();
+});
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -44,8 +62,6 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 
-
-app.use('/api/bill', require('./routes/bills'));
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
